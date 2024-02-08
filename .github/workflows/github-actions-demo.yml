@@ -15,4 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.11' # Adjust the Node.js version according to your project requirements
-      - run: npm run test
+      - name: Install dependencies
+        run: npm install  
+      - name: Run tests
+        run: npm run ghworkflowtest

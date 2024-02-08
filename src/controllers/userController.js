@@ -3,10 +3,13 @@ const {User} = require('../../models');
 
 const createUser = async (req, res) => {
     const { first_name, last_name, password, username } = req.body;
-
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
 
         const existingUser = await User.findOne({ where: { username } });
+        if (!emailRegex.test(username)) {
+            return res.status(400).send('Invalid email address');
+        }
         if (existingUser) {
             return res.status(400).send();
         }
@@ -26,6 +29,7 @@ const createUser = async (req, res) => {
         }
         
     } catch (error) {
+        console.log(error);
         res.status(400).send();
     }
 }
@@ -73,19 +77,22 @@ const updateUser = async (req, res) => {
 
     const base64Credentials = authHeader.split(' ')[1];
     const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
-    const [username, passwordProvided] = credentials.split(':');
-
+    const [usernameProvided, passwordProvided] = credentials.split(':');
+    
     try {
-        const user = await User.findOne({ where: { username } });
+        const user = await User.findOne({ where: { username : usernameProvided } });
 
 
         if (!user || !(await bcrypt.compare(passwordProvided, user.password))) {
             return res.status(401).send();
         }
 
-        const { first_name, last_name, password } = req.body;
-        
-
+        const { first_name, last_name, password, username} = req.body;
+        console.log(username);
+        if(username){
+          
+            return res.status(400).send();
+        }
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
             user.password = hashedPassword;
@@ -101,6 +108,7 @@ const updateUser = async (req, res) => {
         await user.save();
         res.status(204).send();
     } catch (error) {
+        console.log(error);
         res.status(400).send();
     }
 };
