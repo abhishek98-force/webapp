@@ -1,37 +1,38 @@
 name: Setup Server
 
 on: 
-    pull_request:
-      branches: 
-        - main
-jobs:
-    build:
-      runs-on: ubuntu-latest
-      
-      services:
-        postgres:
-          image: postgres:latest
-          env:
-            POSTGRES_DB: ${{ secrets.DB_NAME }}
-            POSTGRES_USER: ${{ secrets.DB_USERNAME}}
-            POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          ports:
-            - 5432:5432
-          options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  pull_request:
+    branches: 
+      - main
 
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+jobs:
+  build:
+    runs-on: ubuntu-latest
       
-        - name: Install Node.js dependencies
-          run: npm install
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mypassword
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Install Node.js dependencies
+        run: npm install
           
-        - name: Run tests
-          env:  
-            DB_USERNAME: ${{ secrets.DB_USERNAME }}
-            DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-            DB_NAME: ${{ secrets.DB_NAME }}
-            DB_HOST: ${{ secrets.DB_HOST }}
-          run: npm run ghworkflowtest    
+      - name: Run tests
+        env:  
+          DB_USERNAME: postgres
+          DB_PASSWORD: mypassword
+          DB_NAME: testdb
+          DB_HOST: 127.0.0.1
+        run: npm run ghworkflowtest
         
         
