@@ -1,0 +1,39 @@
+name: Setup Server
+
+on: 
+    pull_request:
+      branches: 
+        - main
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      
+      env:
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+
+      steps:
+        - uses: actions/checkout@v4
+        - name: Use Node.js
+          uses: actions/setup-node@v3
+          with:
+           node-version: '20.11'
+
+        - name: Install PostgreSQL
+          run: sudo apt-get install -y postgresql postgresql-contrib
+
+        - name: Setup PostgreSQL
+          run: |
+            sudo -u postgres psql -c "CREATE ROLE cent with LOGIN PASSWORD 'helloworld';"
+            sudo -u postgres createdb testdb --owner=cent
+            sudo systemctl restart postgresql.service
+
+        - name: Install dependencies
+          run: npm install  
+          
+        - name: Run tests
+          run: npm run ghworkflowtest    
+        
+        
