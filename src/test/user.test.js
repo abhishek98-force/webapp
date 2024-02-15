@@ -11,14 +11,10 @@ describe('Integration test for user', () => {
     let username_given = "bhavan12aabhishek@gmail.com";
 
     beforeAll(async () => {
-        try {
-          await db.sequelize.sync();
-          console.log('Database synchronized');
-        } catch (error) {
-          console.error('Database synchronization error:', error);
-          process.exit(1); // Exit the process if synchronization fails
-        }
-      });
+       await db.sequelize.sync()
+        .then(()=> console.log('Databae and db created'))
+        .catch(err => console.log('Error creating database and db '+err));
+    })
 
     afterAll(async () => {
         try{
