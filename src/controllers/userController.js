@@ -23,7 +23,8 @@ const createUser = async (req, res) => {
         });
 
         if(user){
-            res.status(201).send(user);
+            const { password, ...userWithoutPassword } = user.toJSON();
+            res.status(201).send(userWithoutPassword);
         } else {
             res.status(400).send();
         }

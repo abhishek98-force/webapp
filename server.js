@@ -17,10 +17,12 @@ app.use((req, res, next) => {
     res.status(404).send();
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
 console.log(`Server is running on port ${port}`);
 });
 
 db.sequelize.sync()
 .then(()=> console.log('Databae and db created'));
+
+module.exports = server;
 
