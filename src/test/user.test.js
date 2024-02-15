@@ -18,7 +18,7 @@ describe('Integration test for user', () => {
 
     afterAll(async () => {
         try{
-        await db.sequelize.query('DELETE FROM "Users" WHERE username = :username',
+        await db.sequelize.query('DELETE  FROM "Users" WHERE username = :username',
         {
             replacements: { username: username_given },
             type: db.sequelize.QueryTypes.SELECT
