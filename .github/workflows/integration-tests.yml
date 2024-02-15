@@ -29,10 +29,10 @@ jobs:
           
       - name: Run tests
         env:  
-          DB_USERNAME: postgres
-          DB_PASSWORD: mypassword
-          DB_NAME: testdb
-          DB_HOST: 127.0.0.1
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_HOST: ${{ env.DB_HOST }}
         run: npm run ghworkflowtest
         
         
