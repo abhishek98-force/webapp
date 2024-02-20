@@ -3,18 +3,20 @@ const request = require('supertest');
 const db = require('../../models/index');
 
 
+//Test 123
+
 
 describe('Integration test for user', () => {
     let first_name_given = "abhisjj";
     let last_name_given = "Doekkkkttt";
     let password_given = "skdjfhskdfjhg";
     let username_given = "bhavan12aabhishek@gmail.com";
-
-    beforeAll(async () => {
-       await db.sequelize.sync()
-        .then(()=> console.log('Databae and db created'))
-        .catch(err => console.log('Error creating database and db '+err));
-    })
+    
+    // beforeAll(async () => {
+    //    await db.sequelize.sync()
+    //     .then(()=> console.log('Databae and db created'))
+    //     .catch(err => console.log('Error creating database and db '+err));
+    // })
 
     afterAll(async () => {
         try{
