@@ -50,7 +50,7 @@ describe('Integration test for user', () => {
             .auth(username_given, password_given);
             console.log(getUserResponse);
     
-        expect(getUserResponse.body.username).toBe('bhavan12aabhishek@gmail.com');
+        expect(getUserResponse.body.username).toBe('bhavan12aabhishektt@gmail.com');
     });
 
     it('edit user and check if it\'s edited', async () => {

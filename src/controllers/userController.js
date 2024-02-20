@@ -3,7 +3,7 @@ const {User} = require('../../models');
 
 const createUser = async (req, res) => {
     const { first_name, last_name, password, username } = req.body;
-   
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
 
