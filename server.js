@@ -11,7 +11,7 @@ const health = require('./src/controllers/health');
 app.use(express.json());
 app.use('/v1/user', user);
 app.get('/healthz', health.healthCheck);
-    app.all('/healthz', async (req, res) => {
+app.all('/healthz', async (req, res) => {
     res.status(405).header('Cache-Control','no-cache').send();
 })
 
@@ -20,12 +20,10 @@ app.use((req, res, next) => {
 })
 
 const server = app.listen(port, () => {
-return;
-console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
 
-db.sequelize.sync()
-.then(()=> console.log('Databae and db created'));
+
 
 module.exports = server;
 

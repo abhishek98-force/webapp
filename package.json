@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "ghworkflowtest": "jest --forceExit",
-    "start": "nodemon server.js"
+    "ghworkflowtest": "npx sequelize-cli db:migrate && jest --forceExit",
+    "start": "nodemon server.js",
+    "migrate-and-run": "npx sequelize-cli db:migrate && npm run start"
   },
   "keywords": [],
   "author": "",

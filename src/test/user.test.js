@@ -11,12 +11,12 @@ describe('Integration test for user', () => {
     let last_name_given = "Doekkkkttt";
     let password_given = "skdjfhskdfjhg";
     let username_given = "bhavan12aabhishek@gmail.com";
-
-    beforeAll(async () => {
-       await db.sequelize.sync()
-        .then(()=> console.log('Databae and db created'))
-        .catch(err => console.log('Error creating database and db '+err));
-    })
+    
+    // beforeAll(async () => {
+    //    await db.sequelize.sync()
+    //     .then(()=> console.log('Databae and db created'))
+    //     .catch(err => console.log('Error creating database and db '+err));
+    // })
 
     afterAll(async () => {
         try{
