@@ -6,6 +6,8 @@ const port = process.env.PORT || 8000;
 const user = require('./src/routes/user');
 
 const health = require('./src/controllers/health');
+
+
 app.use(express.json());
 app.use('/v1/user', user);
 app.get('/healthz', health.healthCheck);
@@ -18,6 +20,7 @@ app.use((req, res, next) => {
 })
 
 const server = app.listen(port, () => {
+return;
 console.log(`Server is running on port ${port}`);
 });
 
