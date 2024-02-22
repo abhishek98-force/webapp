@@ -22,6 +22,7 @@ jobs:
     - name: Debug print credentials file
       run: cat ./packer/dev-img-0b1250fc5338.json
 
+
     - name: Run `packer init`
       id: initial
       run: |
