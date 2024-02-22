@@ -23,7 +23,7 @@ jobs:
       run: cat ./packer/dev-img-0b1250fc5338.json
 
     - name: Run `packer init`
-      id: init
+      id: initial
       run: |
           cd ./packer    
           packer init ./centosdemo.pkr.hcl
