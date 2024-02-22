@@ -23,6 +23,6 @@ jobs:
       - run : |
          cd ./packer
          ls -al
-         "packer init ./centosdemo.pkr.hcl"
-         "packer validate ./centosdemo.pkr.hcl"
-         "packer fmt ./centosdemo.pkr.hcl --check"
+         packer init ./centosdemo.pkr.hcl
+         packer validate ./centosdemo.pkr.hcl
+         packer fmt ./centosdemo.pkr.hcl --check
