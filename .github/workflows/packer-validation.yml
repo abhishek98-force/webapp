@@ -22,7 +22,7 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: "packer init ./image.pkr.hcl"
+        run: "packer init ./packer/centosdemo.pkr.hcl"
 
       - name: Run `packer validate`
         id: validate
