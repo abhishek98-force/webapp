@@ -37,8 +37,8 @@ build {
   }
  
  provisioner "file" {
-    sources = ["../config", "../migrations", "../models","../packer","../src","../.env","../.gitignore"
-    ,"../package-lock.json","../package.json","../Readme.md","../server.js"]
+    sources = ["../config", "../migrations", "../models","../packer","../src","../.gitignore"
+    ,"../package-lock.json","../package.json","../README.md","../server.js"]
     destination = "/tmp/webapp/"
   }
 
