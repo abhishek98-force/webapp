@@ -40,10 +40,10 @@ jobs:
         id: validate
         run: |
             cd ./packer
-            packer validate ./centosdemo.pkr.hcl
+            packer validate ./centosdemo.pkr.hcl 
 
-    #   - name: Run `packer format`
-    #     id: fomrmat
-    #     run: |
-    #         cd ./packer 
-    #         packer fmt centosdemo.pkr.hcl -check
+      - name: Run `packer format`
+        id: fomrmat
+        run: |
+            cd ./packer 
+            packer fmt .
