@@ -47,3 +47,8 @@ jobs:
         run: |
             cd ./packer 
             packer fmt .
+      - name: Run Packer
+        run: |
+            cd packer
+            echo '${{ vars.PACKER_SETTINGS }}' > variables.pkrvars.hcl
+            packer build .
