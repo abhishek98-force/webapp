@@ -41,8 +41,7 @@ jobs:
 
     - name: Run Packer
       run: |
-            cd packer
-            echo '${{ vars.PACKER_SETTINGS }}' > variables.pkrvars.hcl
-            packer build .
+        cd packer
+        packer build ${{ vars.PACKER_VARS }} . 
 
       

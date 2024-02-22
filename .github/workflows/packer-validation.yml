@@ -47,7 +47,4 @@ jobs:
         run: |
             cd ./packer 
             packer fmt .
-      - name: Run Packer
-        run: |
-            cd packer
-            packer build ${{ vars.PACKER_VARS }} . 
+    
