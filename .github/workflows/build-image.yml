@@ -38,5 +38,5 @@ jobs:
     - name: Run Packer
       run: |
             cd ./packer
-            packer build .\centosdemo.pkr.hcl
+            packer build ./centosdemo.pkr.hcl
       
