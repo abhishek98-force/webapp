@@ -37,4 +37,4 @@ jobs:
         id: fomrmat
         run: |
             cd ./packer 
-            packer fmt -check .
+            packer fmt centosdemo.pkr.hcl -check
