@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Run Packer
     steps:
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -23,7 +24,7 @@ jobs:
       - name: Setup env variable
         run: |
             cd ./packer
-            echo '${{ secrets.IAM_KEY }}' >> dev-img-0b1250fc5338.json
+            echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
             ls -al
 
       - name: Debug print credentials file
