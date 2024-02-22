@@ -1,27 +1,29 @@
-name: Validate and Format Packer Template
+name: packer
 
 on:
   pull_request:
     branches:
       - main
 
+env:
+  PRODUCT_VERSION: "1.8.6" # or: "latest"
+
 jobs:
-  packer_validate_and_format:
+  packer:
     runs-on: ubuntu-latest
-
+    name: Run Packer
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Install Packer
-        run: |
-          wget https://releases.hashicorp.com/packer/1.7.5/packer_1.7.5_linux_amd64.zip
-          unzip packer_1.7.5_linux_amd64.zip
-          sudo mv packer /usr/local/bin/packer
-          packer version
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
 
-      - name: Validate Packer Template
-        run: packer validate ./packer/centosdemo.pkr.hcl
+      - name: Run `packer validate`
+        id: validate
+        run: "packer validate ./packer/centosdemo.pkr.hcl"
 
-      - name: Format Packer Template
-        run: packer fmt ./packer/centosdemo.pkr.hcl --check
+      - name: Run `packer format`
+        id: init
+        run: "packer fmt ./packer/centosdemo.pkr.hcl --check"
