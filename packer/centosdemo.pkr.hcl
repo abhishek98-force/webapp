@@ -15,14 +15,22 @@ variable "project_id" {
   default = "dev-img"
 }
 
+variable "ssh_username" {
+  default = "packer"
+}
+
+variable "credential_file_path"{
+   default = "./dev-img-0b1250fc5338.json"
+}
+
 source "googlecompute" "centos-stream-8" {
   image_name   = "centos-stream-8"
   machine_type = "n1-standard-4"
   source_image = "centos-stream-8-v20230509"
-  ssh_username = "packer"
+  ssh_username = var.ssh_username
   zone         = var.zone
   project_id   = var.project_id
-  credentials_file = "./dev-img-0b1250fc5338.json"
+  credentials_file = var.credential_file_path
 }
 
 build {
@@ -30,10 +38,6 @@ build {
 
   provisioner "shell" {
     script = "./scripts/script.sh"
-  }
-
-  provisioner "shell" {
-     inline = [ "mkdir -p /tmp/webapp" ]
   }
  
  provisioner "file" {
@@ -53,14 +57,6 @@ build {
 
   provisioner "shell"{
     script = "./scripts/moveArtifacts.sh"
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo mv /tmp/node-server.service /etc/systemd/system/node-server.service",
-      "sudo systemctl daemon-reload",
-      "sudo systemctl enable node-server.service",
-    ]
   }
 
 
