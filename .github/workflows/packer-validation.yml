@@ -23,12 +23,18 @@ jobs:
       
       - name: Run `packer init`
         id: init
-        run: packer init ./packer/centosdemo.pkr.hcl
+        run: 
+            cd ./packer    
+            packer init ./centosdemo.pkr.hcl
 
       - name: Run `packer validate`
         id: validate
-        run: packer validate ./packer/centosdemo.pkr.hcl
+        run: 
+            cd ./packer
+            packer validate ./centosdemo.pkr.hcl
 
       - name: Run `packer format`
         id: fomrmat
-        run: packer fmt -check .
+        run:
+            cd ./packer 
+            packer fmt -check .
