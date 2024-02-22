@@ -8,18 +8,22 @@ packer {
 }
 
 variable "zone" {
+  type = string
   default = "us-central1-a"
 }
 
 variable "project_id" {
+  type = string
   default = "dev-img"
 }
 
 variable "ssh_username" {
+  type = string
   default = "packer"
 }
 
 variable "credential_file_path"{
+  type = string
    default = "./dev-img-0b1250fc5338.json"
 }
 
