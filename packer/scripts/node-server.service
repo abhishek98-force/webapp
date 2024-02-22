@@ -1,0 +1,18 @@
+[Unit]
+Description=my application
+Documentation=https://example.com
+After=network.target
+
+[Service]
+Environment=DB_USERNAME=cent
+Environment=DB_PASSWORD=helloworld
+Environment=DB_NAME=testdb
+Environment=DB_HOST=127.0.0.1
+
+Type=simple
+User=packer
+ExecStart=/usr/bin/node /home/csye6225/webapp/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
