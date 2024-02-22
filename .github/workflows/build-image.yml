@@ -22,6 +22,18 @@ jobs:
     - name: Debug print credentials file
       run: cat ./packer/dev-img-0b1250fc5338.json
 
+    - name: Run `packer init`
+      id: init
+      run: |
+          cd ./packer    
+          packer init ./centosdemo.pkr.hcl
+
+    - name: Run `packer validate`
+      id: validate
+      run: |
+          cd ./packer
+          packer validate ./centosdemo.pkr.hcl
+
     - name: Run Packer
       run: |
             cd ./packer
