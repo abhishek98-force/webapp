@@ -22,7 +22,7 @@ source "googlecompute" "centos-stream-8" {
   ssh_username = "packer"
   zone         = var.zone
   project_id   = var.project_id
-  account_file = "./scripts/dev-img-0b1250fc5338.json"
+  credentials_file = "./scripts/dev-img-0b1250fc5338.json"
 }
 
 build {
