@@ -19,15 +19,17 @@ jobs:
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
         id: setup
-
+      
+      - run : cd ./packer
+      - run : ls -al
       - name: Run `packer init`
         id: init
-        run: "packer init ./packer/centosdemo.pkr.hcl"
+        run: "packer init ./centosdemo.pkr.hcl"
 
       - name: Run `packer validate`
         id: validate
-        run: "packer validate ./packer/centosdemo.pkr.hcl"
+        run: "packer validate ./centosdemo.pkr.hcl"
 
       - name: Run `packer format`
         id: fomrmat
-        run: "packer fmt ./packer/centosdemo.pkr.hcl --check"
+        run: "packer fmt ./centosdemo.pkr.hcl --check"
