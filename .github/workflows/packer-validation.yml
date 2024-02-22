@@ -51,4 +51,5 @@ jobs:
         run: |
             cd packer
             echo '${{ vars.PACKER_SETTINGS }}' > variables.pkrvars.hcl
-            packer build .
+            cat variables.pkrvars.hcl
+            packer build -var-file=variables.pkrvars.hcl . 
