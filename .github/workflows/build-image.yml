@@ -1,0 +1,29 @@
+name: Build and Deploy
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup env variable
+      run: |
+          cd ./packer
+          echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
+          ls -al
+
+    - name: Debug print credentials file
+      run: cat ./packer/dev-img-0b1250fc5338.json
+
+    - name: Run Packer
+      run: |
+            cd ./packer
+            packer build ./centosdemo.pkr.hcl
+      
