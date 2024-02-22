@@ -25,4 +25,4 @@ jobs:
          ls -al
          packer init ./centosdemo.pkr.hcl
          packer validate ./centosdemo.pkr.hcl
-         packer fmt . --check
+         packer fmt -check .
