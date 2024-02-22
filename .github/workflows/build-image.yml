@@ -39,4 +39,5 @@ jobs:
       run: |
             cd ./packer
             packer build ./centosdemo.pkr.hcl
+
       
