@@ -38,6 +38,7 @@ jobs:
     - name: Run Packer
       run: |
             cd ./packer
-            packer build ./centosdemo.pkr.hcl
-
+            echo '${{ vars.PACKER_SETTINGS }}' > variables.pkvars.hcl
+            cat ./variables.pkrvars.hcl
+            packer build -var-file="variables.pkvars.hcl" .
       
