@@ -18,6 +18,7 @@ sudo systemctl start postgresql
 
 cd /tmp
 
+
 #Create a PostgreSQL user called 'cent' edi 
 sudo -u postgres psql -c "CREATE ROLE cent with LOGIN PASSWORD 'helloworld';"
 
