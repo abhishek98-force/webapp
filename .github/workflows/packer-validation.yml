@@ -20,6 +20,14 @@ jobs:
         uses: hashicorp/setup-packer@main
         id: setup
       
+      - name: Setup env variable
+        run: |
+            cd ./packer
+            echo '${{ secrets.IAM_KEY }}' >> dev-img-0b1250fc5338.json
+            ls -al
+
+      - name: Debug print credentials file
+        run: cat ./packer/dev-img-0b1250fc5338.json
       
       - name: Run `packer init`
         id: init
