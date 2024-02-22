@@ -12,10 +12,14 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Setup `packer`
+      uses: hashicorp/setup-packer@main
+      with:
+        packer_version: 1.10.1
 
     - name: Setup env variable
       run: |
-          cd ./packer
+          cd packer
           echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
           ls -al
 
@@ -26,18 +30,18 @@ jobs:
     - name: Run `packer init`
       id: initial
       run: |
-          cd ./packer    
+          cd packer    
           packer init ./centosdemo.pkr.hcl
 
     - name: Run `packer validate`
       id: validate
       run: |
-          cd ./packer
+          cd packer
           packer validate ./centosdemo.pkr.hcl
 
     - name: Run Packer
       run: |
-            cd ./packer
+            cd packer
             echo '${{ vars.PACKER_SETTINGS }}' > variables.pkrvars.hcl
             packer build -var-file=variables.pkrvars.hcl .
 
