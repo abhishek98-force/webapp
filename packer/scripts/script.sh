@@ -18,7 +18,7 @@ sudo systemctl start postgresql
 
 cd /tmp
 
-#Create a PostgreSQL user called 'cent' edit database
+#Create a PostgreSQL user called 'cent' edit 
 sudo -u postgres psql -c "CREATE ROLE cent with LOGIN PASSWORD 'helloworld';"
 
 #Create a PostgreSQL database called 'testdb' owned by 'cent'
