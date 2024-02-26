@@ -8,7 +8,7 @@ A node js project to cover CI/CD.
  
 ## Introduction
  
-This is a simple Node JS project to develop CI/CD pipeline for CSYE 6225:: Network Structure & Cloud Computing.
+This is a simple Node JS project to develop CI/CD pipeline for CSYE 6225:: Network Structure & Cloud Computing
  
 ## Features
  
