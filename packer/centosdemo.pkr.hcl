@@ -8,32 +8,32 @@ packer {
 }
 
 variable "zone" {
-  type = string
+  type    = string
   default = "us-central1-a"
 }
 
 variable "project_id" {
-  type = string
+  type    = string
   default = "dev-img"
 }
 
 variable "ssh_username" {
-  type = string
+  type    = string
   default = "packer"
 }
 
-variable "credential_file_path"{
-  type = string
-   default = "./dev-img-0b1250fc5338.json"
+variable "credential_file_path" {
+  type    = string
+  default = "./dev-img-0b1250fc5338.json"
 }
 
 source "googlecompute" "centos-stream-8" {
-  image_name   = "centos-stream-8"
-  machine_type = "n1-standard-4"
-  source_image = "centos-stream-8-v20230509"
-  ssh_username = var.ssh_username
-  zone         = var.zone
-  project_id   = var.project_id
+  image_name       = "centos-stream-8"
+  machine_type     = "n1-standard-4"
+  source_image     = "centos-stream-8-v20230509"
+  ssh_username     = var.ssh_username
+  zone             = var.zone
+  project_id       = var.project_id
   credentials_file = var.credential_file_path
 }
 
@@ -43,23 +43,23 @@ build {
   provisioner "shell" {
     script = "./scripts/script.sh"
   }
- 
- provisioner "file" {
-    sources = ["../config", "../migrations", "../models","../packer","../src","../.gitignore"
-    ,"../package-lock.json","../package.json","../README.md","../server.js"]
+
+  provisioner "file" {
+    sources = ["../config", "../migrations", "../models", "../packer", "../src", "../.gitignore"
+    , "../package-lock.json", "../package.json", "../README.md", "../server.js"]
     destination = "/tmp/webapp/"
   }
 
-  provisioner "shell"{
+  provisioner "shell" {
     script = "./scripts/moveAndRun.sh"
   }
 
-   provisioner "file" {
-    source = "./scripts/node-server.service"
+  provisioner "file" {
+    source      = "./scripts/node-server.service"
     destination = "/tmp/node-server.service"
   }
 
-  provisioner "shell"{
+  provisioner "shell" {
     script = "./scripts/moveArtifacts.sh"
   }
 
