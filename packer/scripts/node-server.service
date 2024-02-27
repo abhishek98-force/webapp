@@ -7,7 +7,10 @@ After=network.target
 
 Type=simple
 User=csye6225
-EnvironmentFile=/home/csye6225/webapp/.env
+Environment=DB_USERNAME=csye6225
+Environment=DB_PASSWORD=helloworld
+Environment=DB_NAME=testdb
+Environment=DB_HOST=127.0.0.1
 ExecStart=/usr/bin/node /home/csye6225/webapp/server.js
 Restart=on-failure
 
