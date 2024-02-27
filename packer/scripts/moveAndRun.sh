@@ -3,7 +3,7 @@
 
 mv /tmp/webappzip.zip ~/
 
-sudo unzip -d ~/webapp ~/webappzip.zip
+unzip -d ~/webapp ~/webappzip.zip
 
 cd ~/webapp
 
