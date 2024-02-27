@@ -20,13 +20,8 @@ jobs:
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
         with:
-          packer_version: 1.10.1      
-      - name: Setup env variable
-        run: |
-            cd ./packer
-            echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
-            ls -al
-
+          packer_version: 1.10.1  
+          
       - name: Create zip file
         run: |
             zip -r webappzip.zip ./config \
@@ -37,6 +32,12 @@ jobs:
             ./package-lock.json \
             ./package.json \
             ./server.js
+            
+      - name: Setup env variable
+        run: |
+            cd ./packer
+            echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
+            ls -al
 
       - name: Debug print credentials file
         run: cat ./packer/dev-img-0b1250fc5338.json
