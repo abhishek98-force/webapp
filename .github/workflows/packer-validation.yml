@@ -32,7 +32,8 @@ jobs:
             ./package-lock.json \
             ./package.json \
             ./server.js
-            
+            ls -al
+
       - name: Setup env variable
         run: |
             cd ./packer
