@@ -6,7 +6,7 @@ After=network.target
 [Service]
 
 Type=simple
-User=packer
+User=csye62255
 ExecStart=/usr/bin/node /home/csye6225/webapp/server.js
 Restart=on-failure
 
