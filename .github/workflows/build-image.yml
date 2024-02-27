@@ -24,7 +24,10 @@ jobs:
           echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
           ls -al
           cd ..
-          echo '${{ secrets.DB_CREDS }}' | jq > .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
 
     - name: Create zip file
       run: |
