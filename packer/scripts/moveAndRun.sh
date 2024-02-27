@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-mv /tmp/webappzip ~/
+mv /tmp/webappzip.zip ~/
 
-sudo unzip -d webappzip webapp
+sudo unzip -d ~/webapp ~/webappzip.zip
 
 cd ~/webapp
 
