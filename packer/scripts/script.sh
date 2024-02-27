@@ -20,10 +20,10 @@ cd /tmp
 
 
 #Create a PostgreSQL user called 'cent' edit 
-sudo -u postgres psql -c "CREATE ROLE cent with LOGIN PASSWORD 'helloworld';"
+sudo -u postgres psql -c "CREATE ROLE csye6225 with LOGIN PASSWORD 'helloworld';"
 
 #Create a PostgreSQL database called 'testdb' owned by 'cent'
-sudo -u postgres createdb testdb --owner=cent
+sudo -u postgres createdb testdb --owner=csye6225
 
 echo "Please save and exit Vim to continue with the setup."
 
