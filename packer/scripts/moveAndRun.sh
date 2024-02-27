@@ -1,10 +1,11 @@
 #!/bin/bash
 
-mkdir -p ~/code
 
-mv /tmp/webapp ~/code
+mv /tmp/webappzip ~/
 
-cd ~/code/webapp
+sudo unzip -d webappzip webapp
+
+cd ~/webapp
 
 
 ls -al

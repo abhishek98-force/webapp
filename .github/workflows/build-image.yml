@@ -17,6 +17,17 @@ jobs:
       with:
         packer_version: 1.10.1
 
+    - name: Create zip file
+      run: |
+          zip -r webappzip.zip ./config \
+          ./migrations \
+          ./models \
+          ./packer \
+          ./src \
+          ./package-lock.json \
+          ./package.json \
+          ./server.js
+
     - name: Setup env variable
       run: |
           cd packer

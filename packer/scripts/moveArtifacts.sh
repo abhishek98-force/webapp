@@ -10,4 +10,4 @@ sudo chown -R csye6225:cscredential_file_path
 sudo mv /tmp/node-server.service /etc/systemd/system/node-server.service
 sudo systemctl daemon-reload
 sudo systemctl enable node-server.service
-sudo systemctl enable postgresql
+sudo systemctl enable postgresql 
