@@ -3,7 +3,7 @@
 #Install NodeJs
 sudo dnf -y module install nodejs:20/common 
 
-sudo mkdir webapp
+mkdir webapp
 #Install unzip
 sudo yum install -y unzip
 
