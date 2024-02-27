@@ -27,6 +27,17 @@ jobs:
             echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
             ls -al
 
+      - name: Create zip file
+        run: |
+            zip -r webappzip.zip ./config \
+            ./migrations \
+            ./models \
+            ./packer \
+            ./src \
+            ./package-lock.json \
+            ./package.json \
+            ./server.js
+
       - name: Debug print credentials file
         run: cat ./packer/dev-img-0b1250fc5338.json
       
