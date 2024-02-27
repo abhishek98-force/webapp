@@ -20,7 +20,18 @@ jobs:
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
         with:
-          packer_version: 1.10.1  
+          packer_version: 1.10.1 
+          
+      - name: Setup env variable
+        run: |
+              cd ./packer
+              echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
+              ls -al
+              cd ..
+              echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+              echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+              echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
           
       - name: Create zip file
         run: |
@@ -31,14 +42,10 @@ jobs:
             ./src \
             ./package-lock.json \
             ./package.json \
-            ./server.js
+            ./server.js \
+            ./env
             ls -al
 
-      - name: Setup env variable
-        run: |
-            cd ./packer
-            echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
-            ls -al
 
       - name: Debug print credentials file
         run: cat ./packer/dev-img-0b1250fc5338.json
@@ -61,40 +68,10 @@ jobs:
             cd ./packer 
             packer fmt -check .
 
-      - name: Setup env variable
-        run: |
-          cd packer
-          echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
-          ls -al
-          cd ..
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          ls -al
-
-      - name: Create zip file
-        run: |
-          zip -r webappzip.zip ./config \
-          ./migrations \
-          ./models \
-          ./packer \
-          ./src \
-          ./package-lock.json \
-          ./package.json \
-          ./server.js \
-          ./env 
-
-
-      - name: Run `packer init`
-        id: initial
-        run: |
-          cd packer    
-          packer init ./centosdemo.pkr.hcl
-
-
       - name: Run Packer
         run: |
-          cd packer
-          packer build ${{ vars.PACKER_VARS }} .
+            cd packer
+            packer build ${{ vars.PACKER_VARS }} . 
+
+            
     
