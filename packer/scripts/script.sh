@@ -7,7 +7,7 @@ sudo mkdir webapp
 #Install unzip
 sudo yum install -y unzip
 
-#Install PostgreSQL
+#Install PostgreSQL data
 sudo dnf -y install postgresql-server
 
 #Setup database
