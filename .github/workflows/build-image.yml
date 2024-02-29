@@ -24,14 +24,15 @@ jobs:
 
     - name: Create zip file
       run: |
-          zip -r webappzip.zip ./config \
-          ./migrations \
-          ./models \
-          ./packer \
-          ./src \
-          ./package-lock.json \
-          ./package.json \
-          ./server.js 
+        zip -r webappzip.zip ./config \
+        ./migrations \
+        ./models \
+        ./packer \
+        ./src \
+        ./package-lock.json \
+        ./package.json \
+        ./server.js
+        ls -al
 
 
     - name: Run `packer init`
