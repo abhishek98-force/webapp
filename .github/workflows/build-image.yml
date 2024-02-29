@@ -21,7 +21,7 @@ jobs:
       run: |
             cd packer
             echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
-            
+
     - name: Create zip file
       run: |
           zip -r webappzip.zip ./config \
@@ -31,7 +31,7 @@ jobs:
           ./src \
           ./package-lock.json \
           ./package.json \
-          ./server.js \
+          ./server.js 
 
 
     - name: Run `packer init`
