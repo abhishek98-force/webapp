@@ -13,4 +13,3 @@ sudo chown -R csye6225:csye6225 /home/csye6225/webapp
 sudo mv /tmp/node-server.service /etc/systemd/system/node-server.service
 sudo systemctl daemon-reload
 sudo systemctl enable node-server.service
-sudo systemctl enable postgresql 
