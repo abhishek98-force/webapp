@@ -7,11 +7,12 @@ After=network.target
 
 Type=simple
 User=csye6225
-Environment=DB_USERNAME=webapp
-Environment=DB_PASSWORD=helloworld
-Environment=DB_NAME=webapp
-Environment=DB_HOST=127.0.0.1
-ExecStart=/usr/bin/node /home/csye6225/webapp/server.js
+Group=csye6225
+ExecStart=/bin/bash -c 'DB_USERNAME=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-username) && \
+                        DB_PASSWORD=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-password) && \
+                        DB_NAME=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-name) && \
+                        DB_HOST=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-host) && \
+                        /usr/bin/node /home/csye6225/webapp/server.js'
 Restart=on-failure
 
 [Install]
