@@ -21,19 +21,12 @@ jobs:
         uses: hashicorp/setup-packer@main
         with:
           packer_version: 1.10.1 
-          
+        
       - name: Setup env variable
         run: |
-              cd ./packer
-              echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
-              ls -al
-              cd ..
-              echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-              echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-              echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-              ls -al
-          
+              cd packer
+              echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json    
+
       - name: Create zip file
         run: |
             zip -r webappzip.zip ./config \
@@ -44,7 +37,6 @@ jobs:
             ./package-lock.json \
             ./package.json \
             ./server.js \
-            .env
             ls -al
 
 
@@ -69,10 +61,7 @@ jobs:
             cd ./packer 
             packer fmt -check .
 
-      - name: Run Packer
-        run: |
-            cd packer
-            packer build ${{ vars.PACKER_VARS }} . 
+  
 
             
     
