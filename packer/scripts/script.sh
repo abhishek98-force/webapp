@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Install NodeJs
+#Install NodeJs data
 sudo dnf -y module install nodejs:20/common 
 
 mkdir webapp
