@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll",
-    "ghworkflowtest": "npx sequelize-cli db:migrate && jest --forceExit",
+    "test": "cross-env NODE_ENV=test jest --watchAll",
+    "ghworkflowtest": "cross-env NODE_ENV=test npx sequelize-cli db:migrate && jest --forceExit",
     "start": "nodemon server.js",
     "migrate-and-run": "npx sequelize-cli db:migrate && npm run start"
   },
@@ -25,6 +25,7 @@
     "winston": "^3.12.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "nodemon": "^3.0.3",
     "sequelize-cli": "^6.6.2",
