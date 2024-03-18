@@ -1,12 +1,11 @@
 const bcrypt = require('bcrypt');
 const {User} = require('../../models');
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
     const { first_name, last_name, password, username } = req.body;
-    
+   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
-
         const existingUser = await User.findOne({ where: { username } });
         if (!emailRegex.test(username)) {
             return res.status(400).send('Invalid email address');
@@ -32,15 +31,15 @@ const createUser = async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(400).send();
+        next(error);
     }
 }
 
 
-const getUserInfo = async (req, res) => {
+const getUserInfo = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if(!authHeader){
-        res.status(401).send();
+       return res.status(401).send();
     }
     const [usernameProvided, passwordProvided] = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
     
@@ -64,13 +63,13 @@ const getUserInfo = async (req, res) => {
         const { password, ...userWithoutPassword } = user.toJSON();
         return res.status(200).send(userWithoutPassword);
     } catch (error) {
-        return res.status(400).send();
+        next(error);
     }
 
 }
 
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
 
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Basic ')) {
@@ -111,7 +110,7 @@ const updateUser = async (req, res) => {
         res.status(204).send();
     } catch (error) {
         console.log(error);
-        res.status(400).send();
+         next(error);
     }
 };
 module.exports = {

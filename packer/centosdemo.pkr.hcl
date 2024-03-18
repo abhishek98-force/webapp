@@ -59,6 +59,15 @@ build {
   }
 
   provisioner "shell" {
+    script = "./scripts/install_ops_agent.sh"
+  }
+
+  provisioner "file" {
+    source      = "./scripts/config.yaml"
+    destination = "/etc/google-cloud-ops-agent/config.yaml"
+  }
+
+  provisioner "shell" {
     script = "./scripts/moveArtifacts.sh"
   }
 
