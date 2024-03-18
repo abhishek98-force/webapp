@@ -23,10 +23,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Create directory and assign permission
-        run: |
-          sudo mkdir -p /var/run/cyse6225
-          sudo chown -R $USER:$USER /var/run/csye6225 
       
       - name: Install Node.js dependencies
         run: npm install
