@@ -14,4 +14,4 @@ sudo mv /tmp/node-server.service /etc/systemd/system/node-server.service
 sudo systemctl daemon-reload
 sudo systemctl enable node-server.service
 
-sudo systemctl restart google-cloud-ops-agent
+
