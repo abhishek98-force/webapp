@@ -4,7 +4,6 @@
 sudo mkdir -p /var/log/csye6225
 sudo chown -R csye6225:csye6225 /var/log/csye6225
 
-sudo mv /tmp/config.yaml /etc/google-cloud-ops-agent
 
 # Download and install Ops Agent
 

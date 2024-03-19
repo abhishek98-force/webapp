@@ -43,7 +43,7 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(expressWinston.errorLogger({
         transports: [
             new winston.transports.File({
-            filename : '/var/log/csye6226/errorWebapp.log',
+            filename : '/var/log/csye6225/errorWebapp.log',
             })
         ],
         format: winston.format.combine(
