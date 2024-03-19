@@ -62,7 +62,6 @@ build {
     script = "./scripts/moveArtifacts.sh"
   }
 
-
   provisioner "shell" {
     script = "./scripts/install_ops_agent.sh"
   }
@@ -71,10 +70,14 @@ build {
     source      = "./scripts/config.yaml"
     destination = "/tmp/config.yaml"
   }
-
   provisioner "shell" {
-    inline = ["sudo systemctl restart google-cloud-ops-agent"]
+    inline = [
+      "sudo mv /tmp/config.yaml /etc/google-cloud-ops-agent",
+      "sudo systemctl restart google-cloud-ops-agent"
+      ]
   }
+
+
 
 
 }
