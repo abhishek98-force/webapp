@@ -29,7 +29,7 @@ variable "credential_file_path" {
 
 source "googlecompute" "centos-stream-8" {
   image_name       = "centos-stream-8"
-  machine_type     = "n1-standard-4"
+  machine_type     = "n2-standard-4"
   source_image     = "centos-stream-8-v20230509"
   ssh_username     = var.ssh_username
   zone             = var.zone
