@@ -20,9 +20,12 @@ if (process.env.NODE_ENV !== 'test') {
         })
         ],
         format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json(),
-        winston.format.prettyPrint()
+            winston.format.timestamp(),
+            winston.format.json(),
+            winston.format.printf(info => {
+                info.severity = info.level.toUpperCase();
+                return JSON.stringify(info);
+            })
         ),
         meta: true, // optional: control whether you want to log the meta data about the request (default to true)
         msg: "HTTP {{req.method}} {{req.url}}", // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"
@@ -47,9 +50,12 @@ if (process.env.NODE_ENV !== 'test') {
             })
         ],
         format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json(),
-        winston.format.prettyPrint()
+            winston.format.timestamp(),
+            winston.format.json(),
+            winston.format.printf(error => {
+                error.severity = error.level.toUpperCase();
+                return JSON.stringify(error);
+            })
         ),
         meta: true, // optional: control whether you want to log the meta data about the request (default to true)
         msg: "HTTP {{req.method}} {{req.url}}", // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"
