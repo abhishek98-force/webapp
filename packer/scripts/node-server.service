@@ -8,12 +8,7 @@ After=network.target
 Type=simple
 User=csye6225
 Group=csye6225
-ExecStart=/bin/bash -c '\
-    export DB_USERNAME=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-username" -H "Metadata-Flavor: Google") && \
-    export DB_PASSWORD=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-password" -H "Metadata-Flavor: Google") && \
-    export DB_HOST=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-host" -H "Metadata-Flavor: Google" | sed "s/\././g") && \
-    export DB_NAME=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db-name" -H "Metadata-Flavor: Google") && \
-    /usr/bin/node /home/csye6225/webapp/server.js'
+ExecStart=/usr/bin/node /home/csye6225/webapp/server.js
 Restart=on-failure
 
 [Install]
