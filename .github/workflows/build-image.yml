@@ -2,13 +2,12 @@ name: Build and Deploy
 
 on:
   pull_request:
-    branches:
-      - main
+    types: [closed]
 
 jobs:
   build_image:
     runs-on: ubuntu-latest
- 
+    if: github.event.pull_request.merged == true
 
     steps:
     - name: Checkout code
