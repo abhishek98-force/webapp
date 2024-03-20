@@ -8,6 +8,7 @@ After=network.target
 Type=simple
 User=csye6225
 Group=csye6225
+EnvironmentFile=/etc/csye6225/var_file
 ExecStart=/usr/bin/node /home/csye6225/webapp/server.js
 Restart=on-failure
 
