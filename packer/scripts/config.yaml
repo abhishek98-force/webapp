@@ -13,6 +13,11 @@ logging:
       type: parse_json
       time_key: time
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+    extract-severity:
+      type: extract_from_struct
+      field: "severity"
+      preserve_to: "logging.googleapis.com/severity"
+      overwrite: true 
   service:
     pipelines:
       default_pipeline:
