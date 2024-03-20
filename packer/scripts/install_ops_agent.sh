@@ -5,7 +5,7 @@ sudo mkdir -p /var/log/csye6225
 sudo chown -R csye6225:csye6225 /var/log/csye6225
 
 
-# Download and install Ops Agen
+# Download and install Ops Agent
 
 
 curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
