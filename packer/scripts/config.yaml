@@ -22,4 +22,4 @@ logging:
     pipelines:
       default_pipeline:
         receivers: [webapp-receiver-1, webapp-receiver-2]
-        processors: [webapp-processor]
+        processors: [webapp-processor, move_severity]
