@@ -9,17 +9,17 @@ logging:
       include_paths:
         - /var/log/csye6225/errorWebapp.log
   processors:
-    webapp-processor:
-      type: parse_json
-      time_key: time
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
     move_severity:
       type: modify_fields
       fields:
         severity:
           move_from: jsonPayload.severity  
+    webapp-processor:
+      type: parse_json
+      time_key: time
+      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
   service:
     pipelines:
       default_pipeline:
         receivers: [webapp-receiver-1, webapp-receiver-2]
-        processors: [webapp-processor, move_severity]
+        processors: [move_severity, webapp-processor]

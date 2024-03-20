@@ -73,8 +73,7 @@ build {
   provisioner "shell" {
     inline = [
       "sudo mv /tmp/config.yaml /etc/google-cloud-ops-agent",
-      "sudo systemctl restart google-cloud-ops-agent",
-      "sudo systemctl restart node-server"
+      "sudo systemctl restart google-cloud-ops-agent"
     ]
   }
 
