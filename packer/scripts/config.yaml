@@ -4,22 +4,18 @@ logging:
       type: files
       include_paths:
         - /var/log/csye6225/webapp.log
-    webapp-receiver-2:
-      type: files
-      include_paths:
-        - /var/log/csye6225/errorWebapp.log
   processors:
     move_severity:
       type: modify_fields
       fields:
         severity:
-          move_from: jsonPayload.severity  
+          move_from: jsonPayload.level
     webapp-processor:
       type: parse_json
       time_key: time
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      time_format: "%Y-%m-%d %H:%M:%S.%L"
   service:
     pipelines:
       default_pipeline:
-        receivers: [webapp-receiver-1, webapp-receiver-2]
+        receivers: [webapp-receiver-1]
         processors: [move_severity, webapp-processor]

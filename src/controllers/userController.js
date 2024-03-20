@@ -1,13 +1,19 @@
 const bcrypt = require('bcrypt');
 const {User} = require('../../models');
 
+require("../../config/logger");
+const winston = require("winston");
+const webappLogger = winston.loggers.get("webappLogger");
+
 const createUser = async (req, res, next) => {
+    webappLogger.info("request started for create user"); 
     const { first_name, last_name, password, username } = req.body;
    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
         const existingUser = await User.findOne({ where: { username } });
         if (!emailRegex.test(username)) {
+            webapLogger.error("error in email error");
             return res.status(400).send('Invalid email address');
         }
         if (existingUser) {
@@ -26,17 +32,20 @@ const createUser = async (req, res, next) => {
             const { password, ...userWithoutPassword } = user.toJSON();
             res.status(201).send(userWithoutPassword);
         } else {
+            webappLogger.error("user not created");
             res.status(400).send();
         }
         
     } catch (error) {
         console.log(error);
-        next(error);
+        webappLogger.error("error"+error);
+        return res.status(400).send();
     }
 }
 
 
 const getUserInfo = async (req, res, next) => {
+    webappLogger.info("request started for getUserInfo"); 
     const authHeader = req.headers.authorization;
     if(!authHeader){
        return res.status(401).send();
@@ -50,12 +59,14 @@ const getUserInfo = async (req, res, next) => {
             });
 
         if (!user) {
+            webappLogger.error("cannot find user");
             return res.status(401).send();
         }
 
         const isMatch = bcrypt.compareSync(passwordProvided, user.password);
 
         if (!isMatch) {
+            webappLogger.error("incorrect password");
             return res.status(401).send();
         }
         
@@ -63,14 +74,15 @@ const getUserInfo = async (req, res, next) => {
         const { password, ...userWithoutPassword } = user.toJSON();
         return res.status(200).send(userWithoutPassword);
     } catch (error) {
-        next(error);
+        webappLogger.error("error"+error);
+        return res.status(400).send();
     }
 
 }
 
 
 const updateUser = async (req, res, next) => {
-
+    webappLogger.info("request started for updateUser"); 
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Basic ')) {
         return res.status(401).send();
@@ -110,7 +122,8 @@ const updateUser = async (req, res, next) => {
         res.status(204).send();
     } catch (error) {
         console.log(error);
-         next(error);
+        webappLogger.error("error"+error);
+        return res.status(400).send();
     }
 };
 module.exports = {
