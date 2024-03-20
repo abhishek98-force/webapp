@@ -1,6 +1,8 @@
 const winston = require('winston');
 const {combine, timestamp, json, errors } = winston.format
 
+const logFilePath = process.env.NODE_ENV === 'test' ? './webapp.log' : '/var/log/csye6225/webapp.log';
+
 winston.loggers.add('webappLogger',{
     level: 'debug',
     format: combine(
@@ -10,7 +12,7 @@ winston.loggers.add('webappLogger',{
     transports:[
         new winston.transports.Console(),
         new winston.transports.File({ 
-            filename : '/var/log/csye6225/webapp.log'
+            filename : logFilePath
         }),
     ]
 });
