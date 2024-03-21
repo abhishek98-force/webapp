@@ -85,6 +85,7 @@ const updateUser = async (req, res, next) => {
     webappLogger.info("request started for updateUser"); 
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Basic ')) {
+        webappLogger.error("no auth header");
         return res.status(401).send();
     }
 
@@ -97,13 +98,14 @@ const updateUser = async (req, res, next) => {
 
 
         if (!user || !(await bcrypt.compare(passwordProvided, user.password))) {
+            webappLogger.error("Password incorrect");
             return res.status(401).send();
         }
 
         const { first_name, last_name, password, username} = req.body;
         console.log(username);
         if(username){
-          
+            webappLogger.error("username cannot be updated");
             return res.status(400).send();
         }
         if (password) {
