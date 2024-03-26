@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt');
+const {PubSub} = require('@google-cloud/pubsub');
 const {User} = require('../../models');
 
 require("../../config/logger");
 const winston = require("winston");
+const pubSubClient = new PubSub();
 const webappLogger = winston.loggers.get("webappLogger");
 
 const createUser = async (req, res, next) => {
@@ -19,7 +21,7 @@ const createUser = async (req, res, next) => {
         if (existingUser) {
             return res.status(400).send();
         }
-
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({
             first_name,
@@ -30,6 +32,13 @@ const createUser = async (req, res, next) => {
 
         if(user){
             const { password, ...userWithoutPassword } = user.toJSON();
+            if(process.env.NODE_ENV  != 'test'){
+                const topicName = 'topic-name';
+                const message = JSON.stringify(userWithoutPassword);
+                const dataBuffer = Buffer.from(message);
+                const messageId = await pubSubClient.topic(topicName).publishMessage({data:dataBuffer});
+                webappLogger.info(`Message ${messageId} published.`);
+            }
             res.status(201).send(userWithoutPassword);
         } else {
             webappLogger.error("user not created");
