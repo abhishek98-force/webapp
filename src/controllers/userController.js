@@ -15,11 +15,11 @@ const createUser = async (req, res, next) => {
     try {
         const existingUser = await User.findOne({ where: { username } });
         if (!emailRegex.test(username)) {
-            webapLogger.error("error in email error");
+            webappLogger.error("error in email error");
             return res.status(400).send('Invalid email address');
         }
         if (existingUser) {
-            webapLogger.error("existing user error");
+            webappLogger.error("existing user error");
             return res.status(400).send();
         }
         
@@ -99,7 +99,7 @@ const updateUser = async (req, res, next) => {
     webappLogger.info("request started for updateUser"); 
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Basic ')) {
-        webapLogger.error("No authorization header");
+        webappLogger.error("No authorization header");
         return res.status(401).send();
     }
 
@@ -112,7 +112,7 @@ const updateUser = async (req, res, next) => {
 
 
         if (!user || !(await bcrypt.compare(passwordProvided, user.password))) {
-            webapLogger.error("user not found or password incorrect");
+            webappLogger.error("user not found or password incorrect");
             return res.status(401).send();
         }
 
@@ -124,7 +124,7 @@ const updateUser = async (req, res, next) => {
         const { first_name, last_name, password, username} = req.body;
         console.log(username);
         if(username){
-            webapLogger.error("username cannot be updated");
+            webappLogger.error("username cannot be updated");
             return res.status(400).send();
         }
         if (password) {
