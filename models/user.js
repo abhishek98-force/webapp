@@ -40,6 +40,14 @@ module.exports = (sequelize, DataTypes) => {
       isVerified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+      },
+      token: {
+        type: DataTypes.UUID,
+        allowNull: true
+      },
+      tokenExpiration: {
+        type: DataTypes.DATE,
+        allowNull: true
       }
    
   }, {
