@@ -19,6 +19,7 @@ const createUser = async (req, res, next) => {
             return res.status(400).send('Invalid email address');
         }
         if (existingUser) {
+            webapLogger.error("existing user error");
             return res.status(400).send();
         }
         
@@ -31,9 +32,9 @@ const createUser = async (req, res, next) => {
         });
 
         if(user){
-            const { password, ...userWithoutPassword } = user.toJSON();
+            const { password, isVerified, ...userWithoutPassword } = user.toJSON();
             if(process.env.NODE_ENV  != 'test'){
-                const topicName = 'topic-name';
+                const topicName = 'verify_email';
                 const message = JSON.stringify(userWithoutPassword);
                 const dataBuffer = Buffer.from(message);
                 const messageId = await pubSubClient.topic(topicName).publishMessage({data:dataBuffer});
@@ -72,6 +73,11 @@ const getUserInfo = async (req, res, next) => {
             return res.status(401).send();
         }
 
+        if (!user.isVerified) {
+            webappLogger.error("user is not verified");
+            return res.status(401).send();
+        }    
+
         const isMatch = bcrypt.compareSync(passwordProvided, user.password);
 
         if (!isMatch) {
@@ -79,8 +85,7 @@ const getUserInfo = async (req, res, next) => {
             return res.status(401).send();
         }
         
-
-        const { password, ...userWithoutPassword } = user.toJSON();
+        const { password, isVerified, ...userWithoutPassword } = user.toJSON();
         return res.status(200).send(userWithoutPassword);
     } catch (error) {
         webappLogger.error("error"+error);
@@ -110,6 +115,11 @@ const updateUser = async (req, res, next) => {
             webapLogger.error("user not found or password incorrect");
             return res.status(401).send();
         }
+
+        if (!user.isVerified) {
+            webappLogger.error("user is not verified");
+            return res.status(401).send();
+        }    
 
         const { first_name, last_name, password, username} = req.body;
         console.log(username);
