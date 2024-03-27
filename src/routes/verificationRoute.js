@@ -3,8 +3,8 @@ const {User} = require('../../models');
 
 const router = express.Router();
 
-router.put('/:token', async (req, res) => {
-    console.log(req.params.username);
+router.get('/:token', async (req, res) => {
+    console.log(req.params.token);
     const user = await User.findOne({ where: { id: req.params.token } });
     user.isVerified = true;
     await user.save();
