@@ -40,6 +40,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
+      },
+      token : {
+        allowNull: true,
+        type: Sequelize.UUID
+      },
+      tokenExpiration : {
+        allowNull: true,
+        type: Sequelize.DATE
       }
     });
   },
