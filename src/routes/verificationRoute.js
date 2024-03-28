@@ -10,11 +10,16 @@ const webappLogger = winston.loggers.get("webappLogger");
 router.get('/:token', async (req, res) => {
     try {
       console.log(req.params.token);
-      const user = await User.findOne({ where: { id: req.params.token } });
+      const user = await User.findOne({ where: { token: req.params.token } });
   
       if (!user) {
         webappLogger.error("user not found");
         return res.status(404).send();
+      }
+
+      if (user.tokenExpiration && new Date() > user.tokenExpiration) {
+        webappLogger.error("token expired");
+        return res.status(400).send();
       }
   
       user.isVerified = true;

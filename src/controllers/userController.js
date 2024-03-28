@@ -32,13 +32,13 @@ const createUser = async (req, res, next) => {
         });
 
         if(user){
-            const { password, isVerified, ...userWithoutPassword } = user.toJSON();
+            const { password, isVerified, token, tokenExpiration, ...userWithoutPassword } = user.toJSON();
             if(process.env.NODE_ENV  != 'test'){
-                const topicName = 'verify_email';
-                const message = JSON.stringify(userWithoutPassword);
-                const dataBuffer = Buffer.from(message);
-                const messageId = await pubSubClient.topic(topicName).publishMessage({data:dataBuffer});
-                webappLogger.info(`Message ${messageId} published.`);
+                // const topicName = 'verify_email';
+                // const message = JSON.stringify(userWithoutPassword);
+                // const dataBuffer = Buffer.from(message);
+                // const messageId = await pubSubClient.topic(topicName).publishMessage({data:dataBuffer});
+                // webappLogger.info(`Message ${messageId} published.`);
             }
             res.status(201).send(userWithoutPassword);
         } else {
@@ -85,7 +85,7 @@ const getUserInfo = async (req, res, next) => {
             return res.status(401).send();
         }
         
-        const { password, isVerified, ...userWithoutPassword } = user.toJSON();
+        const { password, isVerified, token, tokenExpiration, ...userWithoutPassword } = user.toJSON();
         return res.status(200).send(userWithoutPassword);
     } catch (error) {
         webappLogger.error("error"+error);
