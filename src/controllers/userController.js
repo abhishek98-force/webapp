@@ -34,11 +34,11 @@ const createUser = async (req, res, next) => {
         if(user){
             const { password, isVerified, token, tokenExpiration, ...userWithoutPassword } = user.toJSON();
             if(process.env.NODE_ENV  != 'test'){
-                // const topicName = 'verify_email';
-                // const message = JSON.stringify(userWithoutPassword);
-                // const dataBuffer = Buffer.from(message);
-                // const messageId = await pubSubClient.topic(topicName).publishMessage({data:dataBuffer});
-                // webappLogger.info(`Message ${messageId} published.`);
+                const topicName = 'verify_email';
+                const message = JSON.stringify(userWithoutPassword);
+                const dataBuffer = Buffer.from(message);
+                const messageId = await pubSubClient.topic(topicName).publishMessage({data:dataBuffer});
+                webappLogger.info(`Message ${messageId} published.`);
             }
             res.status(201).send(userWithoutPassword);
         } else {
