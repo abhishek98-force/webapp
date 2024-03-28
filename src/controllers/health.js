@@ -15,7 +15,7 @@ const healthCheck = async (req, res) => {
         }
         } catch (error) {
         console.log(error);
-        webapLogger.error("error in health check");
+        webappLogger.error("error in health check");
         res.status(503).header('Cache-Control', 'no-cache').send();
         }
 
