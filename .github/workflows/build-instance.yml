@@ -21,4 +21,4 @@ jobs:
             - name: 'Use gcloud CLI'
               run: |
                 gcloud auth activate-service-account --key-file=${{ steps.auth.outputs.credentials_file_path }}
-                gcloud projects list
+                gcloud projects list
