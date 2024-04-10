@@ -17,7 +17,7 @@ jobs:
               uses: 'google-github-actions/setup-gcloud@v2'
               with:
                 version: '>= 363.0.0'
-                project_id: '${{ vars.GCP_PROJECT_ID }}'
+                project_id: '${{ secrets.GCP_PROJECT_ID }}'
             - name: 'Use gcloud CLI'
               run: |
                 gcloud auth activate-service-account --key-file=${{ steps.auth.outputs.credentials_file_path }}
