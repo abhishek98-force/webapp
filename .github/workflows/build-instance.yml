@@ -1,0 +1,24 @@
+name: Update Workflow
+on:
+    pull_request:
+        branches:
+            - main
+jobs:
+    update-template:
+        runs-on: ubuntu-latest
+        steps:
+            - id: 'auth'
+              uses: 'google-github-actions/auth@v2'
+              with:
+                credentials_json: '${{ secrets.GCP_SA_KEY }}'
+                create_credentials_file: true
+                
+            - name: 'Set up Cloud SDK'
+              uses: 'google-github-actions/setup-gcloud@v2'
+              with:
+                version: '>= 363.0.0'
+                project_id: '${{ vars.GCP_PROJECT_ID }}'
+            - name: 'Use gcloud CLI'
+              run: |
+                gcloud auth activate-service-account --key-file=${{ steps.auth.outputs.credentials_file_path }}
+                gcloud projects list
