@@ -22,34 +22,34 @@ jobs:
               run: |
                 gcloud auth activate-service-account --key-file=${{ steps.auth.outputs.credentials_file_path }}
                 gcloud projects list
-            - name: Create new Instance Template version
-              run: |
+            # - name: Create new Instance Template version
+            #   run: |
 
-                echo "${{ vars.STARTUP_SCRIPT }}" > startup.sh
+            #     echo "${{ vars.STARTUP_SCRIPT }}" > startup.sh
 
-                json_data=$(echo '${{ toJson(vars.TEMPLATE_CONFIG) }}' | jq -r '.')
-                machine_type=$(echo "${json_data}" | jq -r '.machineType')
-                disk_type=$(echo "${json_data}" | jq -r '.diskType')
-                disk_size=$(echo "${json_data}" | jq -r '.diskSize')
-                image=$(echo "${json_data}" | jq -r '.image')
-                subnet=$(echo "${json_data}" | jq -r '.subnet')
-                metadata=$(echo "${json_data}" | jq -r '.metadata')
-                service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
-                kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
+            #     json_data=$(echo '${{ toJson(vars.TEMPLATE_CONFIG) }}' | jq -r '.')
+            #     machine_type=$(echo "${json_data}" | jq -r '.machineType')
+            #     disk_type=$(echo "${json_data}" | jq -r '.diskType')
+            #     disk_size=$(echo "${json_data}" | jq -r '.diskSize')
+            #     image=$(echo "${json_data}" | jq -r '.image')
+            #     subnet=$(echo "${json_data}" | jq -r '.subnet')
+            #     metadata=$(echo "${json_data}" | jq -r '.metadata')
+            #     service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
+            #     kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
              
-                gcloud compute instance-templates create csye6225-vm-template \
-                --machine-type $machine_type \
-                --boot-disk-size $disk_size \
-                --boot-disk-type $disk_type \
-                --image $image \
-                --network projects/csye-6225-414418/global/networks/csye6225-vpc\
-                --subnet $subnet \
-                --tags=webapp-firewall \
-                --metadata=$metadata \
-                --service-account=$service_account \
-                --scopes=https://www.googleapis.com/auth/cloud-platform \
-                --boot-disk-kms-key $ \
-                --metadata-from-file=startup-script=startup.sh
+            #     gcloud compute instance-templates create csye6225-vm-template \
+            #     --machine-type $machine_type \
+            #     --boot-disk-size $disk_size \
+            #     --boot-disk-type $disk_type \
+            #     --image $image \
+            #     --network projects/csye-6225-414418/global/networks/csye6225-vpc\
+            #     --subnet $subnet \
+            #     --tags=webapp-firewall \
+            #     --metadata=$metadata \
+            #     --service-account=$service_account \
+            #     --scopes=https://www.googleapis.com/auth/cloud-platform \
+            #     --boot-disk-kms-key $ \
+            #     --metadata-from-file=startup-script=startup.sh
 
 
             
