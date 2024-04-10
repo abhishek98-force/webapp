@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#create log directory
+#create log director
 sudo mkdir -p /var/log/csye6225
 sudo chown -R csye6225:csye6225 /var/log/csye6225
 
