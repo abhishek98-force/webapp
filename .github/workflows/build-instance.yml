@@ -25,7 +25,7 @@ jobs:
             - name: Create new Instance Template version
               run: |
 
-                echo "${{ secrets.STARTUP_SCRIPT }}" > startup.sh
+                echo "${{ vars.STARTUP_SCRIPT }}" > startup.sh
 
                 json_data=$(echo '${{ toJson(vars.TEMPLATE_CONFIG) }}' | jq -r '.')
                 machine_type=$(echo "${json_data}" | jq -r '.machineType')
