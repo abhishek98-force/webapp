@@ -1,55 +1,99 @@
-name: Update Workflow
+name: Build and Deploy
+
 on:
-    pull_request:
-        branches:
-            - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-    update-template:
-        runs-on: ubuntu-latest
-        steps:
-            - id: 'auth'
-              uses: 'google-github-actions/auth@v2'
-              with:
-                credentials_json: '${{ secrets.GCP_SA_KEY }}'
-                create_credentials_file: true
-                
-            - name: 'Set up Cloud SDK'
-              uses: 'google-github-actions/setup-gcloud@v2'
-              with:
-                version: '>= 363.0.0'
-                project_id: '${{ secrets.GCP_PROJECT_ID }}'
-            - name: 'Use gcloud CLI'
-              run: |
-                gcloud auth activate-service-account --key-file=${{ steps.auth.outputs.credentials_file_path }}
-                gcloud projects list
-            # - name: Create new Instance Template version
-            #   run: |
+  build_image:
+    runs-on: ubuntu-latest
 
-            #     echo "${{ vars.STARTUP_SCRIPT }}" > startup.sh
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup `packer`
+      uses: hashicorp/setup-packer@main
+      with:
+        packer_version: 1.10.1
 
-            #     json_data=$(echo '${{ toJson(vars.TEMPLATE_CONFIG) }}' | jq -r '.')
-            #     machine_type=$(echo "${json_data}" | jq -r '.machineType')
-            #     disk_type=$(echo "${json_data}" | jq -r '.diskType')
-            #     disk_size=$(echo "${json_data}" | jq -r '.diskSize')
-            #     image=$(echo "${json_data}" | jq -r '.image')
-            #     subnet=$(echo "${json_data}" | jq -r '.subnet')
-            #     metadata=$(echo "${json_data}" | jq -r '.metadata')
-            #     service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
-            #     kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
-             
-            #     gcloud compute instance-templates create csye6225-vm-template \
-            #     --machine-type $machine_type \
-            #     --boot-disk-size $disk_size \
-            #     --boot-disk-type $disk_type \
-            #     --image $image \
-            #     --network projects/csye-6225-414418/global/networks/csye6225-vpc\
-            #     --subnet $subnet \
-            #     --tags=webapp-firewall \
-            #     --metadata=$metadata \
-            #     --service-account=$service_account \
-            #     --scopes=https://www.googleapis.com/auth/cloud-platform \
-            #     --boot-disk-kms-key $ \
-            #     --metadata-from-file=startup-script=startup.sh
+    - name: Setup env variable
+      run: |
+            cd packer
+            echo '${{ secrets.IAM_KEY }}' | base64 --decode | jq > dev-img-0b1250fc5338.json
+
+    - name: Create zip file
+      run: |
+        zip -r webappzip.zip ./config \
+        ./migrations \
+        ./models \
+        ./packer \
+        ./src \
+        ./package-lock.json \
+        ./package.json \
+        ./server.js
+        ls -al
+
+    - name: Run `packer init`
+      id: initial
+      run: |
+          cd packer    
+          packer init ./centosdemo.pkr.hcl
+
+    - name: Run `packer validate`
+      id: validate
+      run: |
+          cd packer
+          packer validate ./centosdemo.pkr.hcl
+
+    - name: Run Packer
+      run: |
+        cd packer
+        packer build ${{ vars.PACKER_VARS }} .
+
+  build_instance:
+    runs-on: ubuntu-latest
+    needs: build_image
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    - name: Create Instance Template
+      run: |
+        echo "${{ vars.STARTUP_SCRIPT }}" > startup-script.sh
+
+        json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
+        machine_type=$(echo "${json_data}" | jq -r '.machineType')
+        disk_type=$(echo "${json_data}" | jq -r '.diskType')
+        disk_size=$(echo "${json_data}" | jq -r '.diskSize')
+        image=$(echo "${json_data}" | jq -r '.image')
+        subnet=$(echo "${json_data}" | jq -r '.subnet')
+        metadata=$(echo "${json_data}" | jq -r '.metadata')
+        service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
+        kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
+
+        gcloud compute instance-templates create csye6225-vm-template \
+            --machine-type $machine_type \
+            --boot-disk-size $disk_size \
+            --boot-disk-type $disk_type \
+            --image $image \
+            --network projects/csye-6225-414418/global/networks/csye6225-vpc\
+            --subnet $subnet \
+            --tags=webapp-firewall \
+            --metadata=$metadata \
+            --service-account=$service_account \
+            --scopes=https://www.googleapis.com/auth/cloud-platform \
+            --boot-disk-kms-key $kms_key
+            --metadata-from-file=startup-script=startup-script.sh
+
 
 
             
