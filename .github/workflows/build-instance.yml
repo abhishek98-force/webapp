@@ -91,7 +91,9 @@ jobs:
             --metadata=$metadata \
             --service-account=$service_account \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
-            --boot-disk-kms-key $kms_key
+            --metadata-from-file=startup-script=startup-script.sh \
+            --boot-disk-kms-key=$kms_key 
+            
         
 
 
