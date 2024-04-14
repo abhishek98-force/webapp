@@ -86,7 +86,7 @@ jobs:
             --boot-disk-size $disk_size \
             --boot-disk-type $disk_type \
             --image $image \
-            --network projects/csye-6225-414418/global/networks/csye6225-vpc\
+            --network projects/vast-math-414413/global/networks/my-vpc \
             --subnet $subnet \
             --tags=webapp-firewall \
             --metadata=$metadata \
