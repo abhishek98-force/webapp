@@ -68,7 +68,7 @@ jobs:
 
     - name: Create Instance Template
       run: |
-        echo "${{ vars.STARTUP_SCRIPT }}" > startup-script.sh
+        echo '${{ vars.STARTUP_SCRIPT }}' > startup-script.sh
 
         json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
         machine_type=$(echo "${json_data}" | jq -r '.machineType')
