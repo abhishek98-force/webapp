@@ -22,7 +22,7 @@ jobs:
               run: |
                 gcloud auth activate-service-account --key-file=${{ steps.auth.outputs.credentials_file_path }}
                 gcloud projects list
-            # - name: Create new Instance Template version
+            # - name: Create new Instance Template versio
             #   run: |
 
             #     echo "${{ vars.STARTUP_SCRIPT }}" > startup.sh

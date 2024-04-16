@@ -51,6 +51,69 @@ jobs:
       run: |
         cd packer
         packer build ${{ vars.PACKER_VARS }} . 
+  
+  build_instance:
+      needs: build_image
+      runs-on: ubuntu-latest
+  
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Setup google cloud 
+        uses: 'google-github-actions/auth@v2' 
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      - name: Print active account
+        run: gcloud config get-value account
+          
+      - name: Set TEMPLATE_NAME
+        run: echo "TEMPLATE_NAME=csye6225-vm-template-$(date +%s)" >> $GITHUB_ENV
+        
+      - name: Create Instance Template
+        run: |
+        
+            echo '${{ vars.STARTUP_SCRIPT }}' > startup-script.sh
+        
+            json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
+            machine_type=$(echo "${json_data}" | jq -r '.machineType')
+            disk_type=$(echo "${json_data}" | jq -r '.diskType')
+            disk_size=$(echo "${json_data}" | jq -r '.diskSize')
+            image=$(echo "${json_data}" | jq -r '.image')
+            subnet=$(echo "${json_data}" | jq -r '.subnet')
+            metadata=$(echo "${json_data}" | jq -r '.metadata')
+            service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
+            kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
+      
+            gcloud compute instance-templates create ${{ env.TEMPLATE_NAME }} \
+            --machine-type $machine_type \
+            --boot-disk-size $disk_size \
+            --boot-disk-type $disk_type \
+            --image $image \
+            --network projects/vast-math-414413/global/networks/my-vpc \
+            --subnet $subnet \
+            --tags=webapp-firewall \
+            --metadata=$metadata \
+            --service-account=$service_account \
+            --scopes=https://www.googleapis.com/auth/cloud-platform \
+            --metadata-from-file=startup-script=startup-script.sh \
+            --boot-disk-kms-key=$kms_key 
+            
+      - name: 'Update Instance Group'
+        run: |
+          json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
+          region=$(echo "${json_data}" | jq -r '.region')
+          gcloud compute instance-groups managed rolling-action start-update webapp-group-manager-0 \
+          --version template=${{env.TEMPLATE_NAME}} \
+          --region=$region
+      
+      - name: 'Check Update Status'
+        run: |
+          json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
+          region=$(echo "${json_data}" | jq -r '.region')
+          gcloud compute instance-groups managed wait-until webapp-group-manager-0 \
+          --version-target-reached \
+          --region=$region
 
 
       
