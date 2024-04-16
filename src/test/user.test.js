@@ -35,7 +35,7 @@ describe('Integration test for user', () => {
     it('insert user and check if it\'s inserted', async () => {
        console.log('inserting');
         const createUserResponse = await request(app)
-            .post('/v1/user')
+            .post('/v2/user')
             .send({
                 first_name: first_name_given,
                 last_name: last_name_given,
@@ -46,7 +46,7 @@ describe('Integration test for user', () => {
         expect(createUserResponse.status).toBe(201);
         console.log('recieving');
         const getUserResponse = await request(app)
-            .get('/v1/user/self')
+            .get('/v2/user/self')
             .auth(username_given, password_given);
             console.log(getUserResponse);
     
@@ -59,7 +59,7 @@ describe('Integration test for user', () => {
         last_name_given = 'Sam';
 
         const editUser = await request(app)
-        .put('/v1/user/self')
+        .put('/v2/user/self')
         .auth(username_given, password_given)
         .send(
             {
@@ -69,7 +69,7 @@ describe('Integration test for user', () => {
         );
 
         const getUserResponse = await request(app)
-            .get('/v1/user/self')
+            .get('/v2/user/self')
             .auth(username_given, password_given);
             console.log(getUserResponse);
         // Ensure the retrieved user's username matches the one inserted

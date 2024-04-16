@@ -13,7 +13,7 @@ const health = require('./src/controllers/health');
 app.use(express.json());
 
 
-app.use('/v1/user', user);
+app.use('/v2/user', user);
 app.use('/verify', verificationRoute)
 app.get('/healthz', health.healthCheck);
 app.all('/healthz', async (req, res) => {
