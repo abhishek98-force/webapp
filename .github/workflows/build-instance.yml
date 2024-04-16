@@ -65,10 +65,12 @@ jobs:
         
     - name: Print active account
       run: gcloud config get-value account
+      
+    - name: Set TEMPLATE_NAME
+      run: echo "TEMPLATE_NAME=csye6225-vm-template-$(date +%s)" >> $GITHUB_ENV
 
     - name: Create Instance Template
       run: |
-        echo "TEMPLATE_NAME=csye6225-vm-template-$(date +%s)" >> $GITHUB_ENV
 
         echo '${{ vars.STARTUP_SCRIPT }}' > startup-script.sh
 
@@ -81,8 +83,6 @@ jobs:
         metadata=$(echo "${json_data}" | jq -r '.metadata')
         service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
         kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
-
-        echo "Template Name: ${{ env.TEMPLATE_NAME }}"
 
         gcloud compute instance-templates create ${{ env.TEMPLATE_NAME }} \
             --machine-type $machine_type \
