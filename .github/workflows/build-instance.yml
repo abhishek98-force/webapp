@@ -105,7 +105,7 @@ jobs:
       run: |
         json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
         region=$(echo "${json_data}" | jq -r '.region')
-        gcloud compute instance-groups managed wait-until csye6225-vm-igm \
+        gcloud compute instance-groups managed wait-until webapp-group-manager-0 \
         --version-target-reached \
         --region=$region
 
