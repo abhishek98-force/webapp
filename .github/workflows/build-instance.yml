@@ -98,7 +98,7 @@ jobs:
       run: |
         json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
         region=$(echo "${json_data}" | jq -r '.region')
-        gcloud compute instance-groups managed rolling-action start-update instance_group_manager \
+        gcloud compute instance-groups managed rolling-action start-update webapp-group-manager-0 \
         --version template=csye6225-vm-template \
         --region=$region
     - name: 'Check Update Status'
