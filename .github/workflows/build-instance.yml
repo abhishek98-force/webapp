@@ -94,7 +94,20 @@ jobs:
             --metadata-from-file=startup-script=startup-script.sh \
             --boot-disk-kms-key=$kms_key 
             
-        
+    - name: 'Update Instance Group'
+      run: |
+        json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
+        region=$(echo "${json_data}" | jq -r '.region')
+        gcloud compute instance-groups managed rolling-action start-update instance_group_manager \
+        --version template=csye6225-vm-template \
+        --region=$region
+    - name: 'Check Update Status'
+      run: |
+        json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
+        region=$(echo "${json_data}" | jq -r '.region')
+        gcloud compute instance-groups managed wait-until csye6225-vm-igm \
+        --version-target-reached \
+        --region=$region
 
 
 
