@@ -82,7 +82,9 @@ jobs:
         service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
         kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
 
-        gcloud compute instance-templates create ${{env.TEMPLATE_NAME}} \
+        echo "Template Name: ${{ env.TEMPLATE_NAME }}"
+
+        gcloud compute instance-templates create ${{ env.TEMPLATE_NAME }} \
             --machine-type $machine_type \
             --boot-disk-size $disk_size \
             --boot-disk-type $disk_type \
