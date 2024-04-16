@@ -68,6 +68,8 @@ jobs:
 
     - name: Create Instance Template
       run: |
+        echo "TEMPLATE_NAME=csye6225-vm-template-$(date +%s)" >> $GITHUB_ENV
+
         echo '${{ vars.STARTUP_SCRIPT }}' > startup-script.sh
 
         json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
@@ -80,7 +82,7 @@ jobs:
         service_account=$(echo "${json_data}" | jq -r '.serviceAccount')
         kms_key=$(echo "${json_data}" | jq -r '.kmsKey')
 
-        gcloud compute instance-templates create csye6225-vm-template \
+        gcloud compute instance-templates create ${{env.TEMPLATE_NAME}} \
             --machine-type $machine_type \
             --boot-disk-size $disk_size \
             --boot-disk-type $disk_type \
@@ -99,7 +101,7 @@ jobs:
         json_data=$(echo '${{vars.TEMPLATE_CONFIG}}' | jq -r '.')
         region=$(echo "${json_data}" | jq -r '.region')
         gcloud compute instance-groups managed rolling-action start-update webapp-group-manager-0 \
-        --version template=csye6225-vm-template \
+        --version template=${{env.TEMPLATE_NAME}} \
         --region=$region
     - name: 'Check Update Status'
       run: |
